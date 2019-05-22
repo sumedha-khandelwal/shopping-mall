@@ -12,4 +12,6 @@ public interface ShoppingService {
     Optional<ShoppingMall> getShopById(Long id);
 
     List<ShoppingMall> findAll();
+
+    List<ShoppingMall> getNearByPlace(Double lat, Double lng);
 }

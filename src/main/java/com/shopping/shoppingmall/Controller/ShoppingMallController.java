@@ -2,12 +2,13 @@ package com.shopping.shoppingmall.Controller;
 
 import com.shopping.shoppingmall.Service.ShoppingService;
 import com.shopping.shoppingmall.model.ShoppingMall;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * The controller for shopping mall
+ */
 @RestController
 public class ShoppingMallController {
 
@@ -17,24 +18,32 @@ public class ShoppingMallController {
         this.shoppingService=shoppingService;
     }
 
+    /**
+     * Saves the shop
+     * @param shop
+     * @return
+     */
     @PostMapping(value = "/saveShop")
     public String saveShop(@ModelAttribute("shop")ShoppingMall shop){
             shoppingService.saveShop(shop);
             return "success";
     }
 
-    @GetMapping(value = "/shop/{id}")
-    public ShoppingMall getShopDetails(@PathVariable("id")Long id){
-         Optional<ShoppingMall> shop=shoppingService.getShopById(id);
-         if(shop.isPresent()){
-             return shop.get();
-         }
-         else {
-
-             return null;
-         }
+    /**
+     * search shops by distance
+     * @param lat
+     * @param lng
+     * @return
+     */
+    @GetMapping(value = "/shop/search")
+    public List<ShoppingMall> searchDetails(@RequestParam("lat")Double lat,@RequestParam("lng")Double lng){
+        return shoppingService.getNearByPlace(lat,lng);
     }
 
+    /**
+     * get the list of all shops
+     * @return
+     */
     @GetMapping(value = "/list/shops")
     public List<ShoppingMall> getAllShops(){
             return shoppingService.findAll();
